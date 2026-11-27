@@ -1,14 +1,14 @@
-# SIMKHADA AGRO & PROCESSING PVT. LTD.
-
+SIMKHADA AGRO & PROCESSING PVT. LTD.
 Welcome to our official online store.
-
-We bring quality agricultural and processed food products to customers across Nepal.
-
-## Our Brands
-- सम्पूर्ण (SAMPURNA)
-
-## Our Products
-Discover our range of naturally processed agricultural products.
-
-## Contact
-Nepal
+We produce and market quality agricultural and processed food products under our dedicated brands.
+OUR BRANDS
+SAMPURNA (सम्पूर्ण)
+Dried fruits
+Fruit sukuti
+JAYA
+Agricultural powders
+Spices and spice blends
+Herbal tea
+OUR MISSION
+Delivering quality agricultural products through responsible processing and innovation.
+Location: Nepal
