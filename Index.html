@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIMKHADA AGRO & PROCESSING</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#faf9f5;color:#253b2c}
+header{background:#183c2b;color:white;padding:24px 16px;text-align:center}
+header h1{margin:0;font-size:25px;letter-spacing:1px}
+header p{font-size:12px;letter-spacing:2px}
+nav{display:flex;justify-content:center;gap:20px;padding:15px;background:white;position:sticky;top:0;z-index:5}
+nav a{color:#24432e;text-decoration:none;font-weight:bold;font-size:13px}
+.hero{text-align:center;padding:48px 15px;background:#e9eee4}
+.hero h2{font-size:30px;margin:0 0 12px}
+.hero p{color:#586b58}
+button{cursor:pointer;border:0;border-radius:6px;padding:12px 18px;background:#244b32;color:white;font-weight:bold}
+section{padding:28px 16px;max-width:1000px;margin:auto}
+h2{text-align:center}
+.brands{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.brand{background:white;border-radius:10px;padding:22px;text-align:center;border:1px solid #e5e5dc}
+.brand h3{font-size:25px;margin:5px}
+.brand p{font-size:13px;color:#687468}
+.filters{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:20px 0}
+.filters button{background:#e6e9df;color:#29432e}
+.filters button.active{background:#244b32;color:white}
+#products{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:14px}
+.product{background:white;border:1px solid #e9e8df;border-radius:10px;overflow:hidden}
+.photo{height:125px;display:grid;place-items:center;background:#edf0e7;font-size:54px}
+.info{padding:12px}
+.info h3{font-size:16px;margin:0 0 7px}
+.info p{font-size:12px;color:#687468;min-height:30px}
+.price{font-weight:bold;margin:10px 0}
+.info button{width:100%;font-size:12px}
+#cart{background:#edf0e7;border-radius:10px;padding:18px}
+.cart-item{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #d6ddd3;font-size:14px}
+input{width:100%;padding:12px;margin:7px 0;border:1px solid #ccc;border-radius:6px}
+footer{background:#183c2b;color:white;text-align:center;padding:28px 15px;font-size:13px}
+.small{font-size:12px;color:#687468}
+</style>
+</head>
+<body>
+
+<header>
+<h1>SIMKHADA</h1>
+<p>AGRO & PROCESSING PVT. LTD.</p>
+</header>
+
+<nav>
+<a href="#home">HOME</a>
+<a href="#brands">BRANDS</a>
+<a href="#shop">SHOP</a>
+<a href="#cart">CART (<span id="count">0</span>)</a>
+</nav>
+
+<div class="hero" id="home">
+<h2>Nature's Goodness, Preserved.</h2>
+<p>Quality agricultural and processed food products from Nepal.</p>
+<a href="#shop"><button>EXPLORE PRODUCTS</button></a>
+</div>
+
+<section id="brands">
+<h2>OUR BRANDS</h2>
+<div class="brands">
+<div class="brand">
+<h3>सम्पूर्ण</h3>
+<h3>SAMPURNA</h3>
+<p>Dried Fruits & Fruit Sukuti</p>
+</div>
+<div class="brand">
+<h3>JAYA</h3>
+<p>Powders, Spices & Herbal Tea</p>
+</div>
+</div>
+</section>
+
+<section id="shop">
+<h2>OUR PRODUCTS</h2>
+<div class="filters">
+<button class="active" onclick="filterProducts('All',this)">All</button>
+<button onclick="filterProducts('SAMPURNA',this)">SAMPURNA</button>
+<button onclick="filterProducts('JAYA',this)">JAYA</button>
+</div>
+<div id="products"></div>
+</section>
+
+<section>
+<h2>YOUR SHOPPING CART</h2>
+<div id="cart">
+<p>Your cart is empty.</p>
+</div>
+</section>
+
+<section id="contact">
+<h2>PLACE YOUR ORDER</h2>
+<p class="small">Add products to your cart, enter your details and send your order through WhatsApp.</p>
+<input id="customer" placeholder="Your full name">
+<input id="phone" placeholder="Your phone number">
+<input id="address" placeholder="Delivery address">
+<button style="width:100%" onclick="placeOrder()">SEND ORDER ON WHATSAPP</button>
+<p class="small">Cash on Delivery availability and delivery charges will be confirmed with you.</p>
+</section>
+
+<footer>
+<h3>SIMKHADA AGRO & PROCESSING PVT. LTD.</h3>
+<p>SAMPURNA | JAYA</p>
+<p>Nepal</p>
+<p>© 2026 SIMKHADA. All rights reserved.</p>
+</footer>
+
+<script>
+const WHATSAPP_NUMBER = "97798XXXXXXXX";
+
+const products = [
+{id:1,name:"Guava Sukuti",brand:"SAMPURNA",category:"Dried Fruits",emoji:"🍈"},
+{id:2,name:"Dried Banana",brand:"SAMPURNA",category:"Dried Fruits",emoji:"🍌"},
+{id:3,name:"Dried Mango",brand:"SAMPURNA",category:"Dried Fruits",emoji:"🥭"},
+{id:4,name:"Turmeric Powder",brand:"JAYA",category:"Powders & Spices",emoji:"🟡"},
+{id:5,name:"Ginger Powder",brand:"JAYA",category:"Powders & Spices",emoji:"🌿"},
+{id:6,name:"Herbal Tea",brand:"JAYA",category:"Herbal Tea",emoji:"🍵"}
+];
+
+let cart=[];
+let currentFilter="All";
+
+function showProducts(){
+const area=document.getElementById("products");
+area.innerHTML="";
+products.filter(p=>currentFilter==="All"||p.brand===currentFilter).forEach(p=>{
+const div=document.createElement("div");
+div.className="product";
+div.innerHTML=`
+<div class="photo">${p.emoji}</div>
+<div class="info">
+<h3>${p.name}</h3>
+<p>${p.brand} · ${p.category}</p>
+<div class="price">Price on request</div>
+<button onclick="addToCart(${p.id})">ADD TO CART</button>
+</div>`;
+area.appendChild(div);
+});
+}
+
+function filterProducts(filter,button){
+currentFilter=filter;
+document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
+button.classList.add("active");
+showProducts();
+}
+
+function addToCart(id){
+const item=cart.find(x=>x.id===id);
+if(item)item.qty++;
+else cart.push({id,qty:1});
+showCart();
+}
+
+function changeQty(id,change){
+const item=cart.find(x=>x.id===id);
+if(!item)return;
+item.qty+=change;
+if(item.qty<=0)cart=cart.filter(x=>x.id!==id);
+showCart();
+}
+
+function showCart(){
+document.getElementById("count").textContent=cart.reduce((s,x)=>s+x.qty,0);
+const area=document.getElementById("cart");
+if(!cart.length){
+area.innerHTML="<p>Your cart is empty.</p>";
+return;
+}
+area.innerHTML=cart.map(x=>{
+const p=products.find(y=>y.id===x.id);
+return `<div class="cart-item">
+<span>${p.name} (${p.brand})</span>
+<span>
+<button onclick="changeQty(${p.id},-1)">−</button>
+${x.qty}
+<button onclick="changeQty(${p.id},1)">+</button>
+</span>
+</div>`;
+}).join("");
+}
+
+function placeOrder(){
+if(!cart.length){alert("Please add products to your cart first.");return;}
+const name=document.getElementById("customer").value.trim();
+const phone=document.getElementById("phone").value.trim();
+const address=document.getElementById("address").value.trim();
+if(!name||!phone||!address){alert("Please fill in your name, phone and delivery address.");return;}
+if(WHATSAPP_NUMBER.includes("X")){alert("The store WhatsApp number has not been configured yet. Contact the store owner to set it up.");return;}
+let message="NEW ORDER - SIMKHADA AGRO & PROCESSING%0A";
+message+="Name: "+encodeURIComponent(name)+"%0A";
+message+="Phone: "+encodeURIComponent(phone)+"%0A";
+message+="Address: "+encodeURIComponent(address)+"%0A%0A";
+message+="ORDER ITEMS:%0A";
+cart.forEach(x=>{
+const p=products.find(y=>y.id===x.id);
+message+=encodeURIComponent(p.name+" ("+p.brand+") x "+x.qty)+"%0A";
+});
+message+="%0APlease confirm availability and total price.";
+window.open("https://wa.me/"+WHATSAPP_NUMBER+"?text="+message,"_blank");
+}
+
+showProducts();
+</script>
+</body>
+</html>
